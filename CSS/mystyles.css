@@ -1,0 +1,16 @@
+/*this is an external css file */
+fieldset {
+       border:1px  bisque;
+       border-radius: 25px;
+     }
+     legend { color: blue;
+       border: 1px white;
+       width: 150px;
+     }
+     .legend1{ background-color: yellow;
+      }
+
+body { background-color: bisque;
+       text-align: center;
+}
+a, h3, p, h1{background-color: white;}

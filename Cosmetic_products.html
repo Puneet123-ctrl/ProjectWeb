@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Name: Puneet Kaur
+      Description:  Use a keywords to find the Saved items
+	  Date: 2025-03-30 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmetic Products Search</title>
+    <link rel="stylesheet" href="CSS/Styles1.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Cosmetic Products Search</h1>
+        
+        <!-- Search Form -->
+        <form id="searchForm">
+            <label for="keyword">Enter a Keyword:</label>
+            <input type="text" id="keyword" name="keyword" required>
+            <button type="submit">Search</button>
+        </form>
+        
+        <!-- Search Results -->
+        <div id="results"></div>
+        
+        <!-- Keyword List -->
+        <div id="keywordList">
+            <h2>Valid Search Keywords</h2>
+            <ul id="savedKeywords"></ul>
+        </div>
+
+        <!-- Time Stayed -->
+        <div id="timeSpent"></div>
+    </div>
+
+    <script>
+        // Array of Keywords and Related Content
+        const keywordsArray = [
+            { keyword: 'Lipstick', content: 'Information about Lipstick: Ingredients, Colors, Brands...', image: "Images/Lipstick.jpeg"  },
+            { keyword: 'Foundation', content: 'Information about Foundation: Types, Brands, Application...', image: 'Images/Foundation.jpeg' },
+            { keyword: 'Mascara', content: 'Information about Mascara: Types, Application, Brands...', image: 'Images/Mascara.jpg' },
+            { keyword: 'Blush', content: 'Information about Blush: Application, Types, Tips...', image: 'Images/Blush.jpg' },
+            { keyword: 'Eyeliner', content: 'Information about Eyeliner: Liquid, Pencil, Application...', image: 'Images/Eyelinear.jpg' },
+            { keyword: 'Nail Polish', content: 'Information about Nail Polish: Colors, Types, Application...', image: 'Images/NailPolish.jpg' },
+            { keyword: 'Moisturizer', content: 'Information about Moisturizer: Types, Benefits, Ingredients...', image: 'Images/moisture.jpg' },
+            { keyword: 'Sunscreen', content: 'Information about Sunscreen: Types, SPFs, Benefits...', image: 'Images/SunScreen.jpg' },
+            { keyword: 'Perfume', content: 'Information about Perfume: Types, Brands, Notes...', image: 'Images/Perfum.jpeg' },
+            { keyword: 'Serum', content: 'Information about Serum: Types, Benefits, Application...', image: 'Images/Serum.jpeg' }
+        ];
+
+        // Display the saved keywords from local storage
+        function displaySavedKeywords() {
+            const savedKeywords = JSON.parse(localStorage.getItem('savedKeywords')) || [];
+            const savedList = $('#savedKeywords');
+            savedList.empty();
+            savedKeywords.forEach(keyword => {
+                savedList.append(`<li>${keyword}</li>`);
+            });
+        }
+
+        // Search for a keyword and display content
+        $('#searchForm').submit(function(e) {
+            e.preventDefault();
+            const keyword = $('#keyword').val().trim().toLowerCase();
+            const result = keywordsArray.find(item => item.keyword.toLowerCase() === keyword);
+
+            if (result) {
+                $('#results').html(`
+                    <h2>Result for: ${result.keyword}</h2>
+                    <p>${result.content}</p>
+                    <img src="${result.image}" alt="${result.keyword}" />
+                `);
+
+                // Save valid keyword to local storage
+                const savedKeywords = JSON.parse(localStorage.getItem('savedKeywords')) || [];
+                if (!savedKeywords.includes(result.keyword)) {
+                    savedKeywords.push(result.keyword);
+                    localStorage.setItem('savedKeywords', JSON.stringify(savedKeywords));
+                }
+                displaySavedKeywords(); // Update the saved keywords list
+            } else {
+                $('#results').html(`
+                    <p>Sorry, no information found for "${keyword}".</p>
+                    <p>Here are some valid keywords to search for:</p>
+                    <ul>
+                        ${keywordsArray.map(item => `<li>${item.keyword}</li>`).join('')}
+                    </ul>
+                `);
+            }
+        });
+
+        // Display time spent on the page
+        const startTime = new Date();
+        setInterval(() => {
+            const currentTime = new Date();
+            const timeSpent = Math.floor((currentTime - startTime) / 1000); // in seconds
+            $('#timeSpent').text(`Time spent on this page: ${timeSpent} seconds`);
+        }, 1000);
+
+        // Initial setup
+        $(document).ready(function() {
+            displaySavedKeywords(); // Display saved keywords on page load
+        });
+    </script>
+</body>
+</html>
