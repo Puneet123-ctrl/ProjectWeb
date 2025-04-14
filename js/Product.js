@@ -1,39 +1,59 @@
-function calculateTotal() {
-    let subtotal = 0;
-    const products = document.querySelectorAll('.product');
-    const productListDiv = document.getElementById('productList');
-    productListDiv.innerHTML = ''; // Clear previous list
+let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
-    products.forEach((product, index) => {
-        const name = product.querySelector(`[id^="product${index + 1}_name"]`).value;
-        const price = parseFloat(product.querySelector(`[id^="product${index + 1}_price"]`).value);
-        const quantity = parseInt(product.querySelector(`[name="product${index + 1}_qty"]`).value);
-
-        if (quantity > 0) {
-            const itemTotal = price * quantity;
-            subtotal += itemTotal;
-            productListDiv.innerHTML += `<p>${name} x ${quantity}: $${itemTotal.toFixed(2)}</p>`;
-        }
-    });
-
-    const shipping = 7.00; // Updated shipping cost
-    const taxes = subtotal * 0.15; // HST in Quebec
-    const orderTotal = subtotal + shipping + taxes;
+function calculateTotals() {
+    let subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    let shipping = 7.00;
+    let taxes = subtotal * 0.15;
+    let total = subtotal + taxes + shipping;
 
     document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
     document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
     document.getElementById('taxes').textContent = `$${taxes.toFixed(2)}`;
-    document.getElementById('orderTotal').textContent = `$${orderTotal.toFixed(2)}`;
+    document.getElementById('orderTotal').textContent = `$${total.toFixed(2)}`;
+
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    sessionStorage.setItem('totalAmount', total);
 }
 
-function saveCart() {
-    calculateTotal(); // Ensure the total is updated before saving
+function displayCartDetails() {
+    const sidebarCartItemsList = document.getElementById('sidebarCartItems');
+    sidebarCartItemsList.innerHTML = '';
 
-    const orderTotal = document.getElementById('orderTotal').textContent;
-    sessionStorage.setItem('orderTotal', orderTotal);
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `${item.product} - $${item.price} x${item.quantity}
+            <button onclick="removeFromCart('${item.product}')">Remove</button>`;
+        sidebarCartItemsList.appendChild(li);
+    });
 
-    // You would typically save the product selections to session storage here as well
-    // For simplicity, we're just saving the total
-
-    window.location.href = 'Payment.html'; // Assuming your payment page is named 'payment.html'
+    calculateTotals();
 }
+
+$('.add-to-cart').click(function () {
+    const product = $(this).data('product');
+    const price = parseFloat($(this).data('price'));
+
+    const existingProduct = cart.find(item => item.product === product);
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        cart.push({ product, price, quantity: 1 });
+    }
+
+    displayCartDetails();
+});
+
+function removeFromCart(product) {
+    cart = cart.filter(item => item.product !== product);
+    displayCartDetails();
+}
+
+document.getElementById('cartIcon').addEventListener('click', () => {
+    document.getElementById('cartSidebar').classList.toggle('open');
+});
+
+document.getElementById('closeSidebar').addEventListener('click', () => {
+    document.getElementById('cartSidebar').classList.remove('open');
+});
+
+displayCartDetails();

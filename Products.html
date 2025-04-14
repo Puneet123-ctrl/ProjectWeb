@@ -9,79 +9,73 @@
 <head>
     <title>Select Your Cosmetics</title>
     <link rel="stylesheet" href="CSS/Product.css" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Choose Your Beauty Essentials</h1>
-    </header>
 
-    <main>
-        <form id="productForm">
-            <section class="product">
-                <h3>Radiant Foundation</h3>
-                <label for="product1_name">Name:</label>
-                <input type="text" id="product1_name" value="Radiant Foundation" readonly="readonly"/><br/><br/>
-                <label for="product1_price">Price:</label>
-                <input type="number" id="product1_price" value="25.00" readonly="readonly"/><br/><br/>
-                <label for="product1_qty">Quantity:</label>
-                <input type="number" id="product1_qty" name="product1_qty" value="0" min="0" />
-            </section>
+<div class="container">
+    <h1>Cosmetic Shop</h1>
+    <div class="products-list">
+        <div class="product">
+            <img src="Images/Lipstick.jpeg" alt="Lipstick">
+            <h3>Lipstick</h3>
+            <p>$12.00</p>
+            <button class="add-to-cart" data-product="Lipstick" data-price="12.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Images/Foundation.jpeg" alt="Foundation">
+            <h3>Foundation</h3>
+            <p>$25.00</p>
+            <button class="add-to-cart" data-product="Foundation" data-price="25.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Images/Mascara.jpg" alt="Mascara">
+            <h3>Mascara</h3>
+            <p>$18.00</p>
+            <button class="add-to-cart" data-product="Mascara" data-price="18.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Images/NailPolish.jpg" alt="Nail Polish">
+            <h3>Nail Polish</h3>
+            <p>$10.00</p>
+            <button class="add-to-cart" data-product="Nail Polish" data-price="10.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Images/cream.jpeg" alt="cream">
+            <h3>cream</h3>
+            <p>$15.00</p>
+            <button class="add-to-cart" data-product="Cream" data-price="15.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Images/SunScreen.jpg" alt="SunScreen">
+            <h3>SunScreen</h3>
+            <p>$20.00</p>
+            <button class="add-to-cart" data-product="SunScreen" data-price="20.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Images/Serum.jpeg" alt="Serum">
+            <h3>Nail Polish</h3>
+            <p>$25.00</p>
+            <button class="add-to-cart" data-product="Serum" data-price="25.00">Add to Cart</button>
+        </div>
+    </div>
+</div>
 
-            <section class="product">
-                <h3>Luxe Lipstick</h3>
-                <label for="product2_name">Name:</label>
-                <input type="text" id="product2_name" value="Luxe Lipstick" readonly="readonly"/><br/><br/>
-                <label for="product2_price">Price:</label>
-                <input type="number" id="product2_price" value="18.50" readonly="readonly"/><br/><br/>
-                <label for="product2_qty">Quantity:</label>
-                <input type="number" id="product2_qty" name="product2_qty" value="0" min="0" />
-            </section>
+<div class="cart-icon" id="cartIcon">🛒</div>
 
-            <section class="product">
-                <h3>Eyeshadow Palette</h3>
-                <label for="product3_name">Name:</label>
-                <input type="text" id="product3_name" value="Eyeshadow Palette" readonly="readonly"/><br/><br/>
-                <label for="product3_price">Price:</label>
-                <input type="number" id="product3_price" value="32.00" readonly="readonly"/><br/><br/>
-                <label for="product3_qty">Quantity:</label>
-                <input type="number" id="product3_qty" name="product3_qty" value="0" min="0" />
-            </section>
+<div class="sidebar" id="cartSidebar">
+    <span class="close-btn" id="closeSidebar">&times;</span>
+    <h2>Your Cart</h2>
+    <ul id="sidebarCartItems"></ul>
+    <div class="summary">
+        <p>Subtotal: <span id="subtotal">$0.00</span> CAD</p>
+        <p>Shipping: <span id="shipping">$7.00</span> CAD</p>
+        <p>Taxes (HST 15%): <span id="taxes">$0.00</span> CAD</p>
+        <h3>Total: <span id="orderTotal">$0.00</span> CAD</h3>
+    </div>
+    <button class="checkout-btn" onclick="window.location.href='payment.html'">Proceed to Checkout</button>
+</div>
 
-            <section class="product">
-                <h3>Volumizing Mascara</h3>
-                <label for="product4_name">Name:</label>
-                <input type="text" id="product4_name" value="Volumizing Mascara" readonly="readonly"/><br/><br/>
-                <label for="product4_price">Price:</label>
-                <input type="number" id="product4_price" value="20.00" readonly="readonly"/><br/><br/>
-                <label for="product4_qty">Quantity:</label>
-                <input type="number" id="product4_qty" name="product4_qty" value="0" min="0" />
-            </section>
-
-            <section class="product">
-                <h3>Blush Compact</h3>
-                <label for="product5_name">Name:</label>
-                <input type="text" id="product5_name" value="Blush Compact" readonly="readonly"/><br/><br/>
-                <label for="product5_price">Price:</label>
-                <input type="number" id="product5_price" value="15.00" readonly="readonly"/><br/><br/>
-                <label for="product5_qty">Quantity:</label>
-                <input type="number" id="product5_qty" name="product5_qty" value="0" min="0" />
-            </section>
-
-            <section id="cartSummary">
-                <h2>Your Shopping Bag</h2>
-                <div id="productList">
-                    </div>
-                <p>Subtotal: <span id="subtotal">$0.00</span> CAD</p>
-                <p>Shipping: <span id="shipping">$7.00</span> CAD</p>
-                <p>Taxes (HST 15% in Quebec): <span id="taxes">$0.00</span> CAD</p>
-                <h3>Total: <span id="orderTotal">$0.00</span> CAD</h3>
-            </section>
-
-            <button type="button" onclick="calculateTotal()">Update Bag</button>
-            <button type="button" onclick="saveCart()">Proceed to Checkout</button>
-        </form>
-    </main>
-
-    <script src="js/Product.js"></script>
+<script src="js/Product.js"></script>
 </body>
 </html>

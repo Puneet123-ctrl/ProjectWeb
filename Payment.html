@@ -1,51 +1,72 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-     <!-- Name: Puneet Kaur
-      Description: The page  of Payment.html(frames)
-	  Date: 2025-04-07 -->
 <head>
-      <meta charset="UTF-8">
-      <title>Payment Page</title>
-      <link rel="stylesheet" href="CSS/Payment.css">
-      <script src="js/Payment.js" defer></script>
-    </head>
-    <body>
-        <header>
-            <h1>Payment Information</h1>
-        </header>
-    
-        <main>
-            <section id="paymentSummary">
-                <h2>Your Order Total</h2>
-                <p>Total: <span id="finalTotal"></span></p>
-            </section>
-    
-            <form id="paymentForm">
-                <h2>Billing Address</h2>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Payment Page - Cosmetic Store</title>
+    <link rel="stylesheet" href="CSS/Payment.css" />
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Cosmetic Store - Payment</h1>
+
+        <div class="cart-details">
+            <h2>Your Cart</h2>
+            <ul id="cart-items"></ul>
+            <p><strong>Total:</strong> <span id="totalAmount">$0.00</span></p>
+        </div>
+
+        <form id="paymentForm">
+            <h2>Billing Address</h2>
+            <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" required><br><br>
+                <input type="text" id="name" required />
+            </div>
+            <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" required><br><br>
+                <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
                 <label for="address">Address:</label>
-                <input type="text" id="address" required><br><br>
+                <input type="text" id="address" required />
+            </div>
+            <div class="form-group">
                 <label for="city">City:</label>
-                <input type="text" id="city" required><br><br>
+                <input type="text" id="city" required />
+            </div>
+            <div class="form-group">
                 <label for="province">Province:</label>
-                <input type="text" id="province"><br><br>
+                <input type="text" id="province" />
+            </div>
+            <div class="form-group">
                 <label for="postalCode">Postal Code:</label>
-                <input type="text" id="postalCode"><br><br>
-    
-                <h2>Payment Details</h2>
+                <input type="text" id="postalCode" />
+            </div>
+
+            <h2>Payment Details</h2>
+            <div class="form-group">
                 <label for="cardNumber">Card Number:</label>
-                <input type="text" id="cardNumber" pattern="[0-9]{13,19}" placeholder="XXXX-XXXX-XXXX-XXXX" required><br><br>
+                <input type="text" id="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required />
+                <div class="error" id="cardError">Invalid card number.</div>
+            </div>
+            <div class="form-group">
                 <label for="expiryDate">Expiry Date:</label>
-                <input type="month" id="expiryDate" required><br><br>
+                <input type="month" id="expiryDate" required />
+                <div class="error" id="expiryError">Invalid expiry date.</div>
+            </div>
+            <div class="form-group">
                 <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" pattern="[0-9]{3,4}" required><br><br>
-    
-                <button type="submit">Submit Payment</button>
-            </form>
-        </main>
-    </body>
-    </html>
-    
+                <input type="text" id="cvv" required />
+                <div class="error" id="cvvError">Invalid CVV.</div>
+            </div>
+
+            <button type="submit">Submit Payment</button>
+        </form>
+
+        <div id="timeSpent"></div>
+    </div>
+
+    <script src="js/Payment.js"></script>
+</body>
+</html>

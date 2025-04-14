@@ -1,54 +1,76 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const orderTotal = sessionStorage.getItem('orderTotal');
-    if (orderTotal) {
-        document.getElementById('finalTotal').textContent = orderTotal;
+let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+let totalAmount = sessionStorage.getItem('totalAmount') || 0;
+
+function displayCartDetails() {
+    const cartItemsList = document.getElementById('cart-items');
+    const totalAmountElement = document.getElementById('totalAmount');
+
+    cartItemsList.innerHTML = '';
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.product} - $${item.price} x${item.quantity}`;
+        cartItemsList.appendChild(li);
+    });
+
+    totalAmountElement.textContent = `$${parseFloat(totalAmount).toFixed(2)}`;
+}
+
+// Time tracking
+const startTime = new Date();
+setInterval(() => {
+    const timeSpent = Math.floor((new Date() - startTime) / 1000);
+    document.getElementById('timeSpent').textContent = `Time spent on this page: ${timeSpent} seconds`;
+}, 1000);
+
+// Validation
+function isValidCardNumber(number) {
+    return /^\d{13,19}$/.test(number.replace(/\s+/g, ''));
+}
+function isValidCVV(cvv) {
+    return /^\d{3,4}$/.test(cvv);
+}
+function isValidExpiryDate(date) {
+    return !!date;
+}
+
+// Form submission
+$('#paymentForm').submit(function (e) {
+    e.preventDefault();
+
+    let isValid = true;
+
+    const cardNumber = $('#cardNumber').val().replace(/\s+/g, '');
+    const expiryDate = $('#expiryDate').val();
+    const cvv = $('#cvv').val();
+
+    if (!isValidCardNumber(cardNumber)) {
+        $('#cardError').show();
+        isValid = false;
     } else {
-        document.getElementById('finalTotal').textContent = 'Error: Total not found';
+        $('#cardError').hide();
+    }
+
+    if (!isValidExpiryDate(expiryDate)) {
+        $('#expiryError').show();
+        isValid = false;
+    } else {
+        $('#expiryError').hide();
+    }
+
+    if (!isValidCVV(cvv)) {
+        $('#cvvError').show();
+        isValid = false;
+    } else {
+        $('#cvvError').hide();
+    }
+
+    if (isValid) {
+        sessionStorage.clear();
+        alert('Payment Successful!');
+        window.location.href = 'OrderConfirmation.html';
     }
 });
 
-document.getElementById('paymentForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    // Perform your validation here using regular expressions
-    const cardNumber = document.getElementById('cardNumber').value;
-    const expiryDate = document.getElementById('expiryDate').value;
-    const cvv = document.getElementById('cvv').value;
-    const email = document.getElementById('email').value;
-    const postalCode = document.getElementById('postalCode').value;
-
-    const cardNumberRegex = /^[0-9]{13,19}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/; // Canadian postal code example
-
-    let errors = [];
-
-    if (!cardNumberRegex.test(cardNumber)) {
-        errors.push('Invalid card number.');
-    }
-    if (!expiryDate) {
-        errors.push('Please enter the expiry date.');
-    }
-    if (!/^[0-9]{3,4}$/.test(cvv)) {
-        errors.push('Invalid CVV.');
-    }
-    if (!emailRegex.test(email)) {
-        errors.push('Invalid email address.');
-    }
-    if (postalCode && !postalCodeRegex.test(postalCode)) {
-        errors.push('Invalid postal code format.');
-    }
-
-    if (errors.length > 0) {
-        alert('Please correct the following errors:\n' + errors.join('\n'));
-    } else {
-        // If no errors, you would typically process the payment and potentially
-        // store the data in a cookie or send it to a server.
-        alert('Payment submitted successfully!');
-        sessionStorage.removeItem('orderTotal'); // Clear the total after submission
-        // Optionally redirect to a thank you page
-    }
-
-    // Before quitting the page, you might want to clear the session storage
-    // sessionStorage.clear();
+$(document).ready(function () {
+    displayCartDetails();
 });
